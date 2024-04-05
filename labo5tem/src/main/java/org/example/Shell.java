@@ -4,7 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * The Shell class represents a simple command-line shell.
+ * It reads user input and executes corresponding commands.
+ */
 public class Shell {
+
+    /**
+     * The main method starts the shell and listens for user input.
+     * It creates and executes commands based on the user input.
+     *
+     * @param args command-line arguments (not used)
+     * @throws IOException if an I/O error occurs while reading user input
+     */
     public static void main(String[] args) throws IOException {
         String input;
         BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
@@ -21,6 +33,12 @@ public class Shell {
         }
     }
 
+    /**
+     * Creates a command based on the user input.
+     *
+     * @param input the user input string
+     * @return the corresponding command object, or null if no matching command is found
+     */
     private static Command createCommand(String input) {
         if (input.contains("view")) {
             return new View(input);
