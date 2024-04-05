@@ -8,17 +8,32 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Repository class represents a repository containing persons and documents.
+ * It provides methods to interact with the repository contents.
+ */
 public class Repository {
+
     private final Path masterDirectory;
     private final List<Person> persons;
     private final List<Document> documents;
 
+    /**
+     * Constructs a Repository with the given master directory path.
+     *
+     * @param masterDirectoryPath the path of the master directory of the repository
+     */
     public Repository(String masterDirectoryPath) {
         this.masterDirectory = Path.of(masterDirectoryPath);
         this.persons = new ArrayList<>();
         this.documents = new ArrayList<>();
     }
 
+    /**
+     * Displays the content of the repository.
+     *
+     * @throws RepositoryException if an error occurs while reading the repository content
+     */
     public void displayRepositoryContent() {
         try {
             displayContent(masterDirectory);
@@ -42,6 +57,12 @@ public class Repository {
                 });
     }
 
+    /**
+     * Retrieves the list of persons from the repository.
+     *
+     * @return the list of persons in the repository
+     * @throws IOException if an I/O error occurs while accessing the repository
+     */
     public List<Person> getUsers() throws IOException {
         List<Person> users = new ArrayList<>();
         Files.list(masterDirectory)
@@ -58,6 +79,12 @@ public class Repository {
         return users;
     }
 
+    /**
+     * Retrieves the list of documents from the repository.
+     *
+     * @return the list of documents in the repository
+     * @throws IOException if an I/O error occurs while accessing the repository
+     */
     public List<Document> getDocuments() throws IOException {
         List<Document> documents = new ArrayList<>();
         Files.list(masterDirectory)
@@ -75,7 +102,7 @@ public class Repository {
         return documents;
     }
 
-    public List<Document> getDocumentsFromRepo(Path directory) throws IOException {
+    private List<Document> getDocumentsFromRepo(Path directory) throws IOException {
         List<Document> documents = new ArrayList<>();
         Files.list(directory)
                 .forEach(file -> {
@@ -85,6 +112,4 @@ public class Repository {
                 });
         return documents;
     }
-
-
 }
