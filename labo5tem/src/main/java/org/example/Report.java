@@ -15,27 +15,47 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The Report class represents a command to generate and open an HTML report based on repository data.
+ * It implements the Command interface, allowing it to be executed as a command.
+ */
 public class Report implements org.example.Command {
+
     private final Repository userRepository;
 
+    /**
+     * Constructs a Report command with the given repository.
+     *
+     * @param userRepository the repository from which data will be used to generate the report
+     */
     public Report(Repository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Executes the report command by generating and opening an HTML report.
+     *
+     * @throws ShellException if an error occurs during report generation or opening
+     */
     @Override
-    public void execute() throws IOException {
+    public void execute() throws ShellException {
         String htmlContent;
         try {
             htmlContent = generateHtmlReport(userRepository);
             openHtmlReport(htmlContent);
-
         } catch (IOException e) {
             throw new ShellException("Error trying to open HTML report: " + e.getMessage());
-
         }
     }
 
-    private String generateHtmlReport(Repository repository) {
+    /**
+     * Generates an HTML report based on the data from the repository.
+     *
+     * @param repository the repository containing data for the report
+     * @return the HTML content of the generated report
+     * @throws ShellException if an error occurs during report generation
+     */
+    private String generateHtmlReport(Repository repository) throws ShellException {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_31);
         cfg.setClassForTemplateLoading(Shell.class, "/templates");
 
@@ -67,11 +87,15 @@ public class Report implements org.example.Command {
             return out.getBuffer().toString();
         } catch (IOException | TemplateException e) {
             throw new ShellException("Error trying to create HTML report: " + e.getMessage());
-
         }
     }
 
-
+    /**
+     * Opens the generated HTML report.
+     *
+     * @param htmlContent the HTML content of the report
+     * @throws IOException if an error occurs while opening the report
+     */
     private void openHtmlReport(String htmlContent) throws IOException {
         File tempFile = File.createTempFile("report", ".html");
         Files.writeString(tempFile.toPath(), htmlContent);
